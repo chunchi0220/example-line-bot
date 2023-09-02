@@ -34,33 +34,47 @@ const opt={
 //     }
 // });
 
-////promise寫法
+//promise寫法
 // rq(opt)
 // .then(function(res){
 //     var data;
+//     var city;
+//     var town;
 //     for(i in res['cwbopendata']['location']){
-//         if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==SITE_NAME){
+//         //if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==SITE_NAME){
 //             // console.log(body['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']);
-//             data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
-//             break;
+//             if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']=='臺南市' && res['cwbopendata']['location'][i]['parameter'][2]['parameterValue']=='北門區'){
+//                 city=res['cwbopendata']['location'][i]['parameter'][0]['parameterValue'];
+//                 town=res['cwbopendata']['location'][i]['parameter'][2]['parameterValue'];
+//                 data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
+//                 break;
+//             }
 //         }
-//     }
-//     console.log(data);
+//         console.log(city+town+data);
 //             })
 //             .catch(function(error){
 //                 console.log("出錯了～找不到指定資源…");
 //             });
 
-function readweatherAPI(res){
+
+function readweatherAPI(res,city_name,town_name){
     var data;
+    var city;
+    var town;
     for(i in res['cwbopendata']['location']){
-        if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==SITE_NAME){
-            // console.log(body['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']);
+        // if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==SITE_NAME){
+        //     // console.log(body['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']);
+        //     data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
+        //     break;
+        // }
+        if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==city_name && res['cwbopendata']['location'][i]['parameter'][2]['parameterValue']==town_name){
+            city=res['cwbopendata']['location'][i]['parameter'][0]['parameterValue'];
+            town=res['cwbopendata']['location'][i]['parameter'][2]['parameterValue'];
             data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
             break;
-        }
     }
-    return data;
+    const value=[city,town,data];
+    return value;
 }
 
 //建立linebot 物件
@@ -103,10 +117,20 @@ bot.on('message', function (event) {
 		case 'text':
 			switch (event.message.text) {
 				case '天氣':
+                    event.reply("請問要查哪裡的天氣呢~");
+                    switch (event.message.text){
+                        case '臺南市':
+                            var city_name='臺南市';
+                            switch (event.message.text){
+                                case '北門區':
+                                    var town_name='北門區';
+                            }
+                            break;
+                    }
 					let data;
 					rq(opt)
 					.then(function (res) {
-						data = readweatherAPI(res);
+						data = readweatherAPI(res,city_name,town_name);
 						event.reply(data);
 					})
 					.catch(function (err) {

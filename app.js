@@ -127,7 +127,11 @@ bot.on('message', function (event) {
                                 case '北門區':
                                     var town_name='北門區';
                                     break;
+                                default:
+                                    break;
                             }
+                            break;
+                        default:
                             break;
                     }
 					let data;

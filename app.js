@@ -73,7 +73,6 @@ function readweatherAPI(res,city_name,town_name){
             data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
             break;
     }
-}
     const value=[city,town,data];
     return value;
 }
@@ -118,27 +117,11 @@ bot.on('message', function (event) {
 		case 'text':
 			switch (event.message.text) {
 				case '天氣':
-                    event.reply("請問要查哪裡的天氣呢~");
-                    switch (event.message.text){
-                        case '臺南市':
-                            var city_name='臺南市';
-                            event.reply("的哪一區?");
-                            switch (event.message.text){
-                                case '北門區':
-                                    var town_name='北門區';
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
 					let data;
 					rq(opt)
 					.then(function (res) {
-						data = readweatherAPI(res,city_name,town_name);
-						event.reply(data);
+						data = readweatherAPI(res);
+						event.reply(data[2]);
 					})
 					.catch(function (err) {
 						event.reply('無法取得資料～');

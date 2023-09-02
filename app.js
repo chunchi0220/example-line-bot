@@ -73,6 +73,7 @@ function readweatherAPI(res,city_name,town_name){
             data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
             break;
     }
+}
     const value=[city,town,data];
     return value;
 }
@@ -124,6 +125,7 @@ bot.on('message', function (event) {
                             switch (event.message.text){
                                 case '北門區':
                                     var town_name='北門區';
+                                    break;
                             }
                             break;
                     }

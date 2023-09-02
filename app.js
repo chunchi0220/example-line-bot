@@ -57,25 +57,25 @@ const opt={
 //             });
 
 
-function readweatherAPI(res,city_name,town_name){
+function readweatherAPI(res){
     var data;
     var city;
     var town;
     for(i in res['cwbopendata']['location']){
-        // if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==SITE_NAME){
-        //     // console.log(body['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']);
-        //     data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
-        //     break;
-        // }
-        if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==city_name && res['cwbopendata']['location'][i]['parameter'][2]['parameterValue']==town_name){
-            city=res['cwbopendata']['location'][i]['parameter'][0]['parameterValue'];
-            town=res['cwbopendata']['location'][i]['parameter'][2]['parameterValue'];
+        if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==SITE_NAME){
+            // console.log(body['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']);
             data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
             break;
-    }
+        }
+    //     if(res['cwbopendata']['location'][i]['parameter'][0]['parameterValue']==city_name && res['cwbopendata']['location'][i]['parameter'][2]['parameterValue']==town_name){
+    //         city=res['cwbopendata']['location'][i]['parameter'][0]['parameterValue'];
+    //         town=res['cwbopendata']['location'][i]['parameter'][2]['parameterValue'];
+    //         data=res['cwbopendata']['location'][i]['weatherElement'][14]['elementValue']['value'];
+    //         break;
+    // }
 }
-    const value=[city,town,data];
-    return value;
+    // const value=[city,town,data];
+    return data;
 }
 
 //建立linebot 物件
@@ -122,7 +122,7 @@ bot.on('message', function (event) {
 					rq(opt)
 					.then(function (res) {
 						data = readweatherAPI(res);
-						event.reply(data[2]);
+						event.reply(data);
 					})
 					.catch(function (err) {
 						event.reply('無法取得資料～');

@@ -122,6 +122,7 @@ bot.on('message', function (event) {
                     switch (event.message.text){
                         case '臺南市':
                             var city_name='臺南市';
+                            event.reply("的哪一區?");
                             switch (event.message.text){
                                 case '北門區':
                                     var town_name='北門區';
